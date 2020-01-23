@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+     <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
+        <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous"></script>
+        <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="index.css">
+        <title>Movie World</title>
+    
+  </head>
+  <body>
+<section class="bg">
+    <div class="layer">
+</div>
+</section>
+  <div class="container-fluid">
+<div class="row d-flex justify-content-center ">
+    <div class="col">
+        <h1 class="pt-5 title text-center"><span style="font-size:3rem;">M</span>ovie <span style="font-size:3rem;">W</span>orld </h1>
+        <input id="find" type="text" class="text" placeholder="Search movies...">
+        <div class="input-group-append">
+        <button class="search" type="button" id="search" onclick="MovieWorld();"></button>
+    </div>
+</div>
+
+<hr>
+
+<div class="p-4 row" id="result">
+
+</div>
+
+</div>
+
+
+<!--does not work in js console so loading it here-->
+<script>
+
+function MovieWorld() {
+        $('#result').html('')
+        $.ajax({
+        url: 'https://omdbapi.com',
+        type: 'get',
+        dataType: 'json',
+        data: {
+        'apikey': '166b57cd',
+        's': $('#find').val()
+},
+success: function (result) {
+if (result.Response == "True") {
+            let movies = result.Search
+            
+            $.each(movies, function (i, data) {
+            $('#result').append(`
+            <div class="col-md-4">
+            <div class="card mb-3">
+            <img src="`+ data.Poster + `" class="card-img-top img-fluid" alt="poster of ` + data.Title + `">
+            <div class="card-body">
+            <h5 class="card-title">`+ data.Title + `<span class="font-weight-bold">&nbsp;(` + data.Year + `)</span></h5>
+            <a class="click btn text-light" href="https://www.imdb.com/title/`+ data.imdbID +`" target="_blank">View in IMDB</a>
+            </div>
+            </div>
+            </div>
+`)
+})
+
+$('#find').val('')
+
+} else {
+        $('#result').html(`
+        <div class="col">
+        <h1 class="text-center text-light">`+ result.Error + `</h1>
+        </div>
+        `)
+        }
+     }
+})
+}
+
+</script>
+  
+    
+
+  </body>
+</html>
